@@ -6,6 +6,12 @@ const router=Router();
 /* router.get("/",AuthController.fetchUser);
  */
 
+router.get("/",(req,res)=>{
+    res.send({
+        message:"API IS WORKING!!"
+    });
+});
+
 router.get("/user",AuthController.fetchUser);
 
 router.post("/user/signup",AuthController.signup);
