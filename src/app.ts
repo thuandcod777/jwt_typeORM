@@ -15,6 +15,9 @@ app.listen(8080,()=>{
 }); */
 
 createConnection(config as ConnectionOptions).then(async(connection)=>{
+    if(connection.isConnected){
+        console.log("Postgres is connect");
+    }
     const app=express();
     app.use(express.json());
     app.use(express.urlencoded({extended:false}));

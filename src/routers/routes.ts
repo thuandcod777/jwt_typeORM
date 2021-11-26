@@ -12,16 +12,20 @@ router.get("/",(req,res)=>{
     });
 });
 
-router.get("/user",AuthController.fetchUser);
+/* router.get("/user",AuthController.fetchUser);
 
 router.post("/user/signup",AuthController.signup);
 
 router.post("/user/signin",AuthController.signin);
+
+router.post("/user/posts",AuthController.showPosts); */
 
 /* router.post("/add",AuthController.createUser);
 
 router.delete("/delete",AuthController.deleteUser);
 
 router.put("/update",AuthController.updateUser); */
+
+router.post("/user/signup",AuthController.sigup);
 
 export {router};

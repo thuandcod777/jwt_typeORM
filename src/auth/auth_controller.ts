@@ -1,41 +1,87 @@
-import { getManager } from "typeorm";
+import { getCustomRepository, getManager } from "typeorm";
 import {Request,Response} from "express";
 import { UserRepository } from "./repository/user.repos";
+import jwt from "jsonwebtoken";
+import * as EmailValidator from "email-validator";
+import bcrypt from "bcrypt";
 
 export class AuthController{
+   static async showPost(req:Request,res:Response){
+        let jwt_secret_key=process.env.JWT_SECRET_KEY as string;
+        let token=req.headers.authorization as string;
+        jwt.verify(token,jwt_secret_key,async(error:any,data:any)=>{
+            if(error){
+                return res.send({
+                    data:error,
+                    received:false,
+                })
+            }
 
-    //create a new user
-    /*   static async createUser(req: Request,res:Response){
-        let manager=await getManager().getCustomRepository(UserRepository);
-        await manager.createUser(req,res);
-    } */
-
-    
-    static async fetchUser(req:Request,res:Response){
-        let manager=getManager().getCustomRepository(UserRepository);
-        await manager.fetchUser(req,res);
+            return res.send({
+                posts:"List of potst",
+                userdata:data
+            });
+        });
     }
 
-
-  /*   static async deleteUser(req:Request,res:Response){
-        let manager=getManager().getCustomRepository(UserRepository);
-        await manager.deleteUser(req,res);
+    static validateEmail(useremail: string):boolean{
+        let isEmailValidate=EmailValidator.validate(useremail);
+        return isEmailValidate;
     }
 
-    static async updateUser(req:Request,res:Response){
-        let manager=getManager().getCustomRepository(UserRepository);
-        await manager.updateUser(req,res);
-    }
- */
+    static async sigup(req:Request,res:Response){
+        let {username,useremail,userpassword} = req.body;
 
-    static async signin(req:Request,res:Response){
-        let manager=getManager().getCustomRepository(UserRepository);
-        await manager.signin(req,res);
-    }
+        let jwt_secret_key=process.env.JWT_SECRET_KEY as string;
 
-    static async signup(req:Request,res:Response){
-        let manager=getManager().getCustomRepository(UserRepository);
-        await manager.signup(req,res);
+      
+
+        if(!AuthController.validateEmail){
+            return res.send({
+                authentication:false,
+                message:"Email valid email",
+            });
+        }
+
+        let salt=await bcrypt.genSalt(10);
+        bcrypt.hash(userpassword,salt,async(error:any,hashedPassword:any)=>{
+                if(error){
+                    return res.send({
+                        authentication:false,
+                        message:error,
+                    });
+                }    
+
+                
+        let userRepository=getCustomRepository(UserRepository)
+        await userRepository.saveUserData(req,res,hashedPassword);
+
+        jwt.sign(
+            {
+                useremail, //Payload
+            },
+            jwt_secret_key, //Secret key
+            {
+            expiresIn:"1h", //Expiry time
+        },
+        async(error:any,data:any)=>{
+            //Callback
+            if(error){
+                return res.send({
+                    authentication:false,
+                    message:error,
+                });
+            }
+            return res.send({
+                authentication:true,
+                message:data,
+            })
+        });
+        });
+
+
+        
     }
+   
     
 }
