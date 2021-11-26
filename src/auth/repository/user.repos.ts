@@ -14,9 +14,12 @@ import { Request,Response } from "express";
 export class UserRepository extends Repository<User>{
 
     async saveUserData(req:Request,res:Response,hashedPassword:any){
-        let {username,useremail,userpassword} = req.body;
+        let {username,useremail} = req.body;
 
-        let checkIfUserExists=(await this.createQueryBuilder("users").select().where("users.useremail = :useremail",{
+        let checkIfUserExists=
+        (await this.createQueryBuilder("users")
+        .select()
+        .where("users.useremail = :useremail",{
             useremail,
         }).getCount()) > 0;
 
@@ -29,11 +32,38 @@ export class UserRepository extends Repository<User>{
 
         this.createQueryBuilder("users")
         .insert()
-        .values({        
+        .values({
+            username,        
             useremail,
-            username,
             userpassword:hashedPassword
             }).execute()    
         }
 
+    async findUserPassword(req:Request,res:Response,useremail:string):Promise<any>{
+
+        let getbaseuserpassword=await this.createQueryBuilder("users")
+        .select("users.userpassword")
+        .where("users.useremail= :useremail",{useremail})
+        .getOne();
+
+        if(getbaseuserpassword === undefined){
+            return res.send({
+                authentication:false,
+                message:"User not found"
+            })
+        }
+
+        return getbaseuserpassword;
+    }
+
+    async showData(req:Request,res:Response){
+        const {useremail}=req.body;
+
+        try{
+            let data=await this.createQueryBuilder("users").getMany();
+            res.send(data);
+        }catch(error){
+            res.send(error);
+        }
+    }
 }

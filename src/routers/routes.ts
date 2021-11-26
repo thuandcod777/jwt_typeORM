@@ -27,5 +27,7 @@ router.delete("/delete",AuthController.deleteUser);
 router.put("/update",AuthController.updateUser); */
 
 router.post("/user/signup",AuthController.sigup);
-
+router.post("/user/signin",AuthController.signin);
+router.post("/user/post",AuthController.showPost);
+router.get("/user",AuthController.showData);
 export {router};

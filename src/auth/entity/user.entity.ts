@@ -1,27 +1,27 @@
 import {Column,Entity,PrimaryGeneratedColumn } from "typeorm";
 
-@Entity("user")
+@Entity("users")
 export class User{
     @PrimaryGeneratedColumn("increment")
     id!: string;
 
     @Column({
         type: "varchar",
-        nullable: true,
+        nullable: false,
         unique: false,
     })
     username!: string;
 
     @Column({
         type: "varchar",
-        nullable: true,
+        nullable: false,
         unique: false,
     })
     useremail!: string;
 
     @Column({
         type: "varchar",
-        nullable: true,
+        nullable: false,
         unique: false,
     })
     userpassword!: string;
