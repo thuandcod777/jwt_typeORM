@@ -3,16 +3,16 @@ import { ConnectionOptions } from "typeorm";
 import { User } from "./auth/entity/user.entity";
 
  const config={
-    host: "ec2-54-88-154-67.compute-1.amazonaws.com",
-    user: "dulbzpihpwsiyb",
-    password: "085dac27d01705f3d22a80892d9a49419f99cc03c61955318064c843a375b239",
-    database: "d1g53ag0gsm50f",
+    host: "ec2-3-211-3-53.compute-1.amazonaws.com",
+    user: "izwzqionrtoxhn",
+    password: "af51df3cb767638e0fc2dc878282dc08c60a4ef9376e9faac80e54a92fa5f6c7",
+    database: "deafalgbjbgcdp",
 };
  
  const connectionOptions: ConnectionOptions={
     type: "postgres",
-    url: "postgres://dulbzpihpwsiyb:085dac27d01705f3d22a80892d9a49419f99cc03c61955318064c843a375b239@ec2-54-88-154-67.compute-1.amazonaws.com:5432/d1g53ag0gsm50f",
-    host: "ec2-54-88-154-67.compute-1.amazonaws.com" || "localhost",
+    url: "postgres://izwzqionrtoxhn:af51df3cb767638e0fc2dc878282dc08c60a4ef9376e9faac80e54a92fa5f6c7@ec2-3-211-3-53.compute-1.amazonaws.com:5432/deafalgbjbgcdp",
+    host: config.host || "localhost",
     port: 5432,
     username: config.user,
     password: config.password,
