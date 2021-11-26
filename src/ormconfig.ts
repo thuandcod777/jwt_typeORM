@@ -35,7 +35,6 @@ import { User } from "./auth/entity/user.entity";
 
 const connectionOptions: ConnectionOptions={
     type: "postgres",
-    /* url: "postgres://dulbzpihpwsiyb:085dac27d01705f3d22a80892d9a49419f99cc03c61955318064c843a375b239@ec2-54-88-154-67.compute-1.amazonaws.com:5432/d1g53ag0gsm50f", */
     host: "localhost",
     port: 5432,
     username: "postgres",
